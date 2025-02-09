@@ -44,21 +44,26 @@ class MultiAgentEnv(gym.Env):
         for agent in self.agents:
             total_action_space = []
             # physical action space
-            if self.discrete_action_space:  # 判断该动作是否为离散空间
+            if self.discrete_action_space:  # 如果是离散的动作空间
                 u_action_space = spaces.Discrete(world.dim_p * 2 + 1)  # 离散的动作数量{0，1，2，3，4}
             else:
                 u_action_space = spaces.Box(low=agent.d_range, high=agent.u_range, shape=(world.dim_p,),
                                             dtype=np.float32)  # 连续的范围
             if agent.movable:
                 total_action_space.append(u_action_space)
-            # # communication action space 交互动作
-            # if self.discrete_action_space:
-            #     c_action_space = spaces.Discrete(world.dim_c)
-            # else:
-            #     c_action_space = spaces.Box(low=0.0, high=1.0, shape=(world.dim_c,), dtype=np.float32)
-            # if not agent.silent:
-            #     total_action_space.append(c_action_space)
-            # total action space
+
+
+            # communication action space 交互动作
+            if self.discrete_action_space:# 如果动作空间离散
+                c_action_space = spaces.Discrete(world.dim_c)
+            else: # 连续动作
+                c_action_space = spaces.Box(low=0.0, high=1.0, shape=(world.dim_c,), dtype=np.float32)
+
+            if not agent.silent:
+                total_action_space.append(c_action_space)
+
+            # print("total_action_space:",total_action_space)
+
             if len(total_action_space) > 1:
                 # all action spaces are discrete, so simplify to MultiDiscrete action space
                 if all([isinstance(act_space, spaces.Discrete) for act_space in total_action_space]):
@@ -228,6 +233,7 @@ class MultiAgentEnv(gym.Env):
                 agent.action.c[action[0]] = 1.0
             else:
                 agent.action.c = action[0]
+                print("action.c:",action[0])
             action = action[1:]
         # make sure we used all elements of action
         assert len(action) == 0

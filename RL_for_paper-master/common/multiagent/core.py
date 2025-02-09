@@ -63,7 +63,7 @@ class Agent(Entity):
         # agents are movable by default
         self.movable = True
         # cannot send communication signals
-        self.silent = False
+        self.silent = True
         # cannot observe the world
         self.blind = False
         # physical motor noise amount
@@ -88,7 +88,7 @@ class World(object):
         self.agents = [] # agent列表
         self.landmarks = []
         # communication channel dimensionality 交互维度
-        self.dim_c = 0
+        self.dim_c = 2
         # 实际动作维度为1个
         self.dim_p = 1
         # color dimensionality

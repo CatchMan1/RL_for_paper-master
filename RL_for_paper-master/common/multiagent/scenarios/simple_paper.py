@@ -7,7 +7,7 @@ class Scenario(BaseScenario):
 
     def make_world(self):
         world = World()
-        world.dim_c = 2
+        world.dim_c = 2 # 通信维度2个交互
         num_agents = 3
         num_landmarks = 3
         world.agents = [Agent() for i in range(num_agents)]
@@ -16,7 +16,7 @@ class Scenario(BaseScenario):
         for i, agent in enumerate(world.agents):
             agent.name = f'agent_{i}'
             agent.collide = False # 不碰撞
-            agent.silent = True # 通信
+            agent.silent = True # 要求通信
             agent.size = 0.0
             agent.task_done = False  # 增加任务状态
             agent.weight = weights[i]  # 初始化权重
@@ -42,7 +42,7 @@ class Scenario(BaseScenario):
             agent.gas_temperture = np.random.uniform(0,100,1)# 气温范围
             agent.paper_fiber = np.random.uniform(0,100,1)# 干燥纸页的绝干纤维物料量范围
             agent.R_s = np.random.uniform(0.48, 0.92,1)# 纸页开始干度范围——要调整
-            agent.R_b = np.random.uniform(0.48, 0.92,1)# 纸页终止干度范围
+            agent.R_b = np.random.uniform(0.92, 1.00,1)# 纸页终止干度范围
             agent.T_s = np.random.uniform(20, 100,1)# 起始温度
             agent.T_b = np.random.uniform(20, 100,1)# 终止温度
             # 根据上面四个数计算吸取的热量：(公式要改)——对应公式9
